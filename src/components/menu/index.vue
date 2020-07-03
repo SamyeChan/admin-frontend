@@ -1,13 +1,14 @@
 <template>
   <div class="menu">
     <el-menu
+      class="menu-vertical"
       :router="true"
       :default-active="pPath"
       :collapse="collapse"
-      background-color="#0747a6"
-      text-color="#fff"
-      active-text-color="#0747a6"
-      class="menu-vertical"
+      :unique-opened="true"
+      :background-color="backgroundColor"
+      :text-color="textColor"
+      :active-text-color="activeTextColor"
       style="height: 100%;"
     >
       <template v-for="(item, index) in menuList">
@@ -19,7 +20,7 @@
         >
           <template slot="title">
             <i :class="item.meta.icon ? item.meta.icon : 'el-icon-menu'"></i>
-            <span>{{ filterTitle(item) }}</span>
+            <span>{{ filterMenuTitle(item) }}</span>
           </template>
           <template v-for="(item2, index2) in item.children">
             <!-- 二级含子项 -->
@@ -28,25 +29,25 @@
               :index="item2.path"
               :key="index2"
             >
-              <template slot="title">{{ filterTitle(item2) }}</template>
+              <template slot="title">{{ filterMenuTitle(item2) }}</template>
               <!-- 最多支持三级菜单 -->
               <el-menu-item
                 v-for="(item3, index3) in item2.children"
                 :index="item3.path"
                 :key="index3"
-                >{{ filterTitle(item3) }}</el-menu-item
+                >{{ filterMenuTitle(item3) }}</el-menu-item
               >
             </el-submenu>
             <!-- 二级无子项 -->
             <el-menu-item v-else :index="item2.path" :key="index2">
-              <span slot="title">{{ filterTitle(item2) }}</span>
+              <span slot="title">{{ filterMenuTitle(item2) }}</span>
             </el-menu-item>
           </template>
         </el-submenu>
         <!-- 一级无子项 -->
-        <el-menu-item v-else :index="item.path" :key="index">
+        <el-menu-item :index="item.path" :key="index" v-else>
           <i :class="item.meta.icon ? item.meta.icon : 'el-icon-menu'"></i>
-          <span slot="title">{{ filterTitle(item) }}</span>
+          <span slot="title">{{ filterMenuTitle(item) }}</span>
         </el-menu-item>
       </template>
     </el-menu>
@@ -56,13 +57,27 @@
 <script>
 export default {
   props: {
+    // 菜单列表
     menuList: {
       type: Array,
       required: true
     },
+    // 侧边栏是否折叠
     collapse: {
       type: Boolean,
       default: false
+    },
+    backgroundColor: {
+      type: String,
+      default: '#0747a6'
+    },
+    activeTextColor: {
+      type: String,
+      default: '#0747a6'
+    },
+    textColor: {
+      type: String,
+      default: '#fff'
     }
   },
   computed: {
@@ -78,7 +93,8 @@ export default {
     }
   },
   methods: {
-    filterTitle(item) {
+    // 过滤出菜单标题
+    filterMenuTitle(item) {
       if (item.meta && item.meta.title) {
         return item.meta.title
       }

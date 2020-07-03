@@ -44,7 +44,7 @@ http.interceptors.response.use(
         // 请求成功
         return Promise.resolve(data)
       } else {
-        // 请求错误
+        // 请求错误 --> 报错无规范，按具体开发而定 //! FIXME
         switch (code) {
           case REDIRECT: // 重定向
             window.location.href = data
