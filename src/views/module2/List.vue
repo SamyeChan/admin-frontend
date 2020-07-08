@@ -1,5 +1,5 @@
 <template>
-  <div>模块2</div>
+  <div>二级菜单页</div>
 </template>
 
 <script>

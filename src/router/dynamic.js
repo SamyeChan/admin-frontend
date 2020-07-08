@@ -47,7 +47,8 @@ export const dynamicRoutes = [
         meta: {
           pTitle: '模块1',
           title: '列表',
-          isMenu: false
+          isMenu: false,
+          keepAlive: true
         }
       },
       {

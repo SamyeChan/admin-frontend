@@ -13,9 +13,9 @@
 
 ```bash
 #拉代码
-git clone [-b 分支] git@119.23.107.222:department4/xxx.git
+git clone [-b 分支] git@119.23.107.222:department4/vue-admin.git
    or
-git clone [-b 分支] http://119.23.107.222/department4/xxx.git
+git clone [-b 分支] http://119.23.107.222/department4/vue-admin.git
 #安装依赖
 npm install
 #启动项目
@@ -26,8 +26,8 @@ npm run serve
 
 1. Gitlab:
 ```bash
-SSH:  git@119.23.107.222:department4/xxx.git
-HTTP: http://119.23.107.222/department4/xxx.git
+SSH:  git@119.23.107.222:department4/vue-admin.git
+HTTP: http://119.23.107.222/department4/vue-admin.git
 ```
 2. YApi：https://yapi.leayun.cn/mock/142/proj/
 
@@ -48,12 +48,13 @@ HTTP: http://119.23.107.222/department4/xxx.git
 │   │   ├── common.scss
 │   │   └── ...
 │   ├── components       // 公共组件
-│   │   ├── breadcrumb
-│   │   ├── imgPreview
-│   │   ├── menu
-│   │   ├── pagination
-│   │   ├── table
-│   │   └── tagInput
+│   │   ├── layout       // 布局类
+│   │   │   ├── breadcrumb
+│   │   │   └── menu
+│   │   └── content      // 内容类
+│   │   │   ├── imgPreview
+│   │   │   ├── table
+│   │   │   └── pagination
 │   ├── http
 │   │   ├── error.js     // 异常状态码
 │   │   └── index.js     // axios封装
@@ -118,6 +119,19 @@ HTTP: http://119.23.107.222/department4/xxx.git
 
 ### 多组件引入
 
+```
+│   ├── components       // 公共组件
+│   │   ├── layout       // 布局类
+│   │   │   ├── ...
+│   │   │   ├── breadcrumb
+│   │   │   └── menu
+│   │   └── content      // 内容类
+│   │   │   ├── ...
+│   │   │   ├── imgPreview
+│   │   │   ├── table
+│   │   │   └── pagination
+```
+
 
 ## DONE & TODO
 
@@ -131,21 +145,24 @@ HTTP: http://119.23.107.222/department4/xxx.git
 - [x] 404处理 --> 需要匹配在最后项，故挂载于权限路由表中；
 - [ ] 个人中心下拉框配置；
 
-##### 组件
+##### 布局组件
 
-- [ ] 表格；
+- [ ] 面包屑；
+- [ ] 菜单栏；
+- [ ] 用户栏；
+
+###### 内容组件
+
+- [ ] 表格（分页/操作）；
+- [ ] 搜索（普通/远程）；
+- [ ] 下拉框（普通/远程）；
+- [ ] 时间选择控件；
 - [ ] 表单；
-- [ ] 分页；
-- [ ] 操作；
-- [ ] 搜索；
 - [ ] 图片显示；
 - [ ] 图片上传；
 - [ ] 文件上传；
 - [ ] 拓展项组件；
-- [ ] 面包屑；
-- [ ] 图片预览；
-- [ ] 远程搜索；
-
+- [ ] 图表；
 
 ##### 方法
 

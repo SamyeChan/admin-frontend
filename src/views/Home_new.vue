@@ -23,7 +23,7 @@
     </div>
     <!-- PC | 顶部栏 -->
     <div class="header-pc">
-      <el-avatar class="header-pc-avatar" src="/default-avatar.png"></el-avatar>
+      <CUser :showName="nickName" :hasAvatar="BASE.HAS_AVATAR" />
       <el-dropdown
         class="header-pc-opt"
         @command="handleCommand"
@@ -63,7 +63,7 @@
           width: isFold ? '64px' : '220px'
         }"
       />
-      <img class="lyentech-logo" :src="BASE.LYENTECH" v-show="!isFold" />
+      <img class="lyentech-logo" src="@/assets/lyentech.png" v-show="!isFold" />
     </div>
     <!-- 内容区 -->
     <transition :name="transition">
@@ -80,6 +80,7 @@
 
 <script>
 import BASE from '@/assets/baseConf'
+import CUser from '@/components/layout/user-bars'
 import CMenu from '@/components/layout/menu'
 import CBreadcrumb from '@/components/layout/breadcrumb'
 import { mapState } from 'vuex'
@@ -94,6 +95,7 @@ export default {
     }
   },
   components: {
+    CUser,
     CMenu,
     CBreadcrumb
   },
@@ -214,6 +216,7 @@ export default {
     z-index: 100;
     width: 100%;
     height: 60px;
+    line-height: 60px;
     background: #fff;
     text-align: right;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.08);
