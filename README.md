@@ -13,9 +13,9 @@
 
 ```bash
 #拉代码
-git clone [-b 分支] git@119.23.107.222:department4/vue-admin.git
+git clone git@github.com:SamyeChan/admin-frontend.git
    or
-git clone [-b 分支] http://119.23.107.222/department4/vue-admin.git
+git clone https://github.com/SamyeChan/admin-frontend.git
 #安装依赖
 npm install
 #启动项目
@@ -26,8 +26,8 @@ npm run serve
 
 1. Gitlab:
 ```bash
-SSH:  git@119.23.107.222:department4/vue-admin.git
-HTTP: http://119.23.107.222/department4/vue-admin.git
+SSH:   git@github.com:SamyeChan/admin-frontend.git
+HTTPS: https://github.com/SamyeChan/admin-frontend.git
 ```
 2. YApi：https://yapi.leayun.cn/mock/142/proj/
 
@@ -135,7 +135,7 @@ HTTP: http://119.23.107.222/department4/vue-admin.git
 
 ## DONE & TODO
 
-##### 整体模板
+#### 整体模板
 
 - [x] 从Ark中剥离模板；
 - [x] 路由配置；
@@ -145,15 +145,16 @@ HTTP: http://119.23.107.222/department4/vue-admin.git
 - [x] 404处理 --> 需要匹配在最后项，故挂载于权限路由表中；
 - [ ] 个人中心下拉框配置；
 
-##### 布局组件
+#### 布局组件
 
 - [ ] 面包屑；
 - [ ] 菜单栏；
 - [ ] 用户栏；
 
-###### 内容组件
+#### 内容组件
 
-- [ ] 表格（分页/操作）；
+- [ ] 表格；
+- [ ] 分页；
 - [ ] 搜索（普通/远程）；
 - [ ] 下拉框（普通/远程）；
 - [ ] 时间选择控件；
@@ -161,23 +162,40 @@ HTTP: http://119.23.107.222/department4/vue-admin.git
 - [ ] 图片显示；
 - [ ] 图片上传；
 - [ ] 文件上传；
+- [ ] 文件下载；
 - [ ] 拓展项组件；
 - [ ] 图表；
+- [ ] 对话框；
+- [ ] 标签选择栏；
+- [ ] 回到顶部；
 
-##### 方法
+#### 方法
 
 - [ ] 表单校验（常用正则）；
 - [ ] 常用方法；
 - [ ] 异步；
 
 
-##### DEMO模块
+#### DEMO模块
 
-- [ ] 基础版（List + Detial）；
+##### 表格
 
-##### 其它
+- [ ] 基础表格页；
+- [ ] 分页表格页；
+- [ ] 搜索表格页；
+
+##### 表单
+
+- [ ] 基础表单页；
+- [ ] 含图片上传表单页；
+
+##### 地图
+
+
+#### 其它
 
 - [ ] iframe引入；
 - [ ] 链接复制；
 - [ ] 刷新后应保持先前页面位置；
+- [x] 静态路由菜单位置先于动态路由；
 - [ ] 啥时候用Message，啥时候用Notification

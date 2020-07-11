@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'RouterView2' // 模块路由
+  name: 'Table' // 表格页
 }
 </script>
 

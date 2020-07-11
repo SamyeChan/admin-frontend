@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination">
+  <div class="pagination" :style="`text-align: ${position};`">
     <div class="pagination-content">
       <el-pagination
         :current-page="currentPage"
@@ -18,7 +18,7 @@
 </template>
 <script>
 export default {
-  name: 'page',
+  name: 'pagination',
   props: {
     // 当前页
     currentPage: {
@@ -37,13 +37,21 @@ export default {
         return [10, 20, 30]
       }
     },
+    // 数据总条数
+    total: {
+      type: Number,
+      required: true,
+      default: 0
+    },
+    // 组件展示项
     layout: {
       type: String,
       default: 'total, sizes, prev, pager, next, jumper'
     },
-    total: {
-      type: Number,
-      required: true
+    // 组件位置 - left/center/right
+    position: {
+      type: String,
+      default: 'right'
     }
   },
   watch: {
@@ -90,8 +98,6 @@ export default {
 .pagination {
   background-color: #fff;
   width: 100%;
-  display: flex;
-  justify-content: center;
   &-content {
     margin: 15px 10px;
   }

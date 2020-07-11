@@ -15,6 +15,11 @@ module.exports = {
         target: 'https://yapi.leayun.cn/mock/142', // YApi
         changeOrigin: true,
         pathRewrite: {}
+      },
+      '/proj': {
+        target: 'https://yapi.leayun.cn/mock/142', // YApi
+        changeOrigin: true,
+        pathRewrite: {}
       }
     }
   }

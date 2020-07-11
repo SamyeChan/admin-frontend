@@ -1,5 +1,9 @@
 <template>
-  <div id="app" v-loading="loading" element-loading-text="拼命加载中...">
+  <div
+    id="app"
+    v-loading="loading"
+    :element-loading-text="`${BASE.TITLE_ABBR} 拼命加载中...`"
+  >
     <!-- 系统主页 -->
     <CHome :menuList="menuList" v-if="!loading && hasAuth && !notFound" />
     <!-- 无权限页面 -->
@@ -10,17 +14,21 @@
 </template>
 
 <script>
+import BASE from '@/assets/baseConf'
 import CNoAuth from './views/NoAuth'
 import CHome from './views/Home'
 import { mapState } from 'vuex'
 import { constantRoutes } from '@/router/constant'
 import { UtilMethods } from '@/utils'
 
+const util = new UtilMethods()
+
 export default {
   name: 'app',
   components: { CNoAuth, CHome },
   data() {
     return {
+      BASE,
       loading: true, // 加载
       hasAuth: false, // 是否有权限
       notFound: false // 404
@@ -47,7 +55,8 @@ export default {
 
       let permissionArr = filterMenu(this.permissionRoutes, '*')
       let constantArr = filterMenu(constantRoutes, '/')
-      permissionArr = permissionArr.concat(constantArr)
+      // 静态路由会放置在动态路由前面
+      permissionArr = constantArr.concat(permissionArr)
 
       return this.handleChildrenPath(permissionArr)
     }
@@ -67,7 +76,6 @@ export default {
     // 拼接children中的path，最多支持三层，不支持递归
     handleChildrenPath(menuList) {
       const path = require('path')
-      const util = new UtilMethods()
       const menus = util.deepCopy(menuList)
       for (let i = 0; i < menus.length; i++) {
         let child1 = menus[i].children
@@ -100,7 +108,8 @@ body,
 #app {
   margin: 0px;
   padding: 0px;
-  background-color: #f0f2f5;
+  // background-color: #f0f2f5;
+  background-color: #fff;
   height: 100%;
 }
 html,

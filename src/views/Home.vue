@@ -43,7 +43,9 @@
     <div :class="isPhFold ? 'aside fold' : 'aside'">
       <div :class="isFold ? 'header-pc-sys fold' : 'header-pc-sys'">
         <span>{{ BASE.TITLE_CN }}</span>
-        <span style="font-size: 16px; margin-left: 10px;">后台配置系统</span>
+        <span style="font-size: 16px; margin-left: 10px;">
+          {{ BASE.TITLE_SUB }}
+        </span>
         <el-tooltip
           :content="isFold ? '展开菜单栏' : '收起菜单栏'"
           placement="right"
