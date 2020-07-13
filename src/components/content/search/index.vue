@@ -59,15 +59,16 @@
     <el-form-item class="button" :label="' '">
       <el-button
         :size="cOptions.size"
-        round
-        icon="el-icon-refresh"
+        :round="cOptions.round"
+        icon="el-icon-refresh-right"
         @click="handleReset"
       >
         重置
       </el-button>
       <el-button
         type="primary"
-        round
+        :size="cOptions.size"
+        :round="cOptions.round"
         icon="el-icon-search"
         @click="handleSearch"
       >
@@ -147,8 +148,9 @@ export default {
   created() {
     this.cOptions = Object.assign(
       {
-        size: 'mini', // 大小
-        labelWidth: 80 // 标签宽度
+        size: 'mini', // 大小 - medium/small/mini
+        round: true, // 是否圆角
+        labelWidth: 80 // 标签宽度(px)
       },
       this.options || {}
     )
@@ -157,9 +159,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/**
+ * margin-bottom：15px 
+ */
 .search {
+  // margin-top: 15px !important;
   .item {
     width: 220px;
+  }
+  ::v-deep .el-form-item {
+    margin-bottom: 15px !important;
   }
 }
 </style>

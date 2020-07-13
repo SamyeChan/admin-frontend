@@ -4,7 +4,7 @@
       该页面为综合表格页
     -->
     <CSearch :propset="searchConfig.props" @res="resSearch" />
-    <CBtn :sets="btnConfig.sets" />
+    <CBtn :sets="btnConfig.sets" :options="btnConfig.options" />
     <CTable
       :columns="tableConfig.columns"
       :options="tableConfig.options"
@@ -101,7 +101,8 @@ export default {
   },
   created() {
     // 初始化配置js中的this
-    BtnConfig.sendThis(this)
+    // BtnConfig.sendThis(this)
+    this._getTableList()
   }
 }
 </script>

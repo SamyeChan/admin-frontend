@@ -1,11 +1,18 @@
 <template>
-  <el-row class="container">
-    <el-button plain disabled>朴素按钮</el-button>
-    <el-button type="primary" plain disabled>主要按钮</el-button>
-    <el-button type="success" plain disabled>成功按钮</el-button>
-    <el-button type="info" plain disabled>信息按钮</el-button>
-    <el-button type="warning" plain disabled>警告按钮</el-button>
-    <el-button type="danger" plain disabled>危险按钮</el-button>
+  <el-row class="toolbar" :style="`text-align:${cOptions.position};`">
+    <el-button
+      :plain="cOptions.plain"
+      :size="cOptions.size"
+      :round="cOptions.round"
+      v-for="(btn, index) of sets"
+      :key="index"
+      :type="btn.type"
+      :icon="btn.icon"
+      :disabled="btn.disabled"
+      @click="btn.onClick()"
+    >
+      {{ btn.label }}
+    </el-button>
   </el-row>
 </template>
 
@@ -33,7 +40,10 @@ export default {
   created() {
     this.cOptions = Object.assign(
       {
-        size: 'mini' // 大小
+        position: 'right', // 按钮组位置 - left/center/right
+        size: 'small', // 大小 - medium/small/mini
+        plain: false, // 是否非填充
+        round: false // 是否圆角
       },
       this.options || {}
     )
@@ -42,8 +52,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  margin: 10px 0;
-  text-align: right;
+/**
+ * margin-bottom：15px 
+ */
+.toolbar {
+  margin: 0 0 15px 0;
 }
 </style>
