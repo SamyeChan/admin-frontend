@@ -76,14 +76,17 @@
               v-if="typeof scope.row[column.prop] === 'string'"
               style="display:inline-block;height:inherit;"
             >
-              <CImg :src="scope.row[column.prop] + column.imgSuffix" />
+              <CImg :src="scope.row[column.prop] + (column.imgSuffix || '')" />
             </span>
             <span v-else style="display:inline-block;height:inherit;">
               <CImg
+                :src="scope.row[column.prop][0] + (column.imgSuffix || '')"
+              />
+              <!-- <CImg
                 v-for="(v, i) of scope.row[column.prop]"
                 :key="i"
-                :src="`v${column.imgSuffix}`"
-              />
+                :src="v + (column.imgSuffix || '')"
+              /> -->
             </span>
           </template>
 

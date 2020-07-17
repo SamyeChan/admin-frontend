@@ -1,18 +1,24 @@
 <template>
   <el-row class="toolbar" :style="`text-align:${cOptions.position};`">
-    <el-button
-      :plain="cOptions.plain"
-      :size="cOptions.size"
-      :round="cOptions.round"
+    <span
+      class="btn"
       v-for="(btn, index) of sets"
       :key="index"
-      :type="btn.type"
-      :icon="btn.icon"
-      :disabled="btn.disabled"
-      @click="btn.onClick()"
+      :style="btn.visible == false ? 'margin: 0;' : 'margin: 0 5px 10px;'"
     >
-      {{ btn.label }}
-    </el-button>
+      <el-button
+        :plain="cOptions.plain"
+        :size="cOptions.size"
+        :round="cOptions.round"
+        :type="btn.type"
+        :icon="btn.icon"
+        :disabled="btn.disabled"
+        @click="btn.onClick()"
+        v-show="!(btn.visible === false)"
+      >
+        {{ btn.label }}
+      </el-button>
+    </span>
   </el-row>
 </template>
 
@@ -57,5 +63,8 @@ export default {
  */
 .toolbar {
   margin: 0 0 15px 0;
+  .btn {
+    margin: 0 5px 10px;
+  }
 }
 </style>

@@ -16,7 +16,7 @@
       <template v-if="!item.type || item.type === 'input'">
         <el-input
           class="item"
-          :placeholder="`请输入${item.label}`"
+          :placeholder="item.placeholder || `请输入${item.label}`"
           clearable
           v-model="params[item.prop]"
           @clear="handleClear(item.prop)"
@@ -28,14 +28,14 @@
       <template v-if="item.type === 'select'">
         <el-select
           class="item"
-          :placeholder="`请选择${item.label}`"
+          :placeholder="item.placeholder || `请选择${item.label}`"
           clearable
           v-model="params[item.prop]"
           @clear="handleClear(item.prop)"
           @change="handleSearch"
         >
           <el-option
-            v-for="v in item.optionArr"
+            v-for="v in item.optionArr()"
             :key="v.id"
             :label="v.label"
             :value="v.id"
@@ -47,21 +47,23 @@
       <template v-if="item.type === 'date'">
         <el-date-picker
           class="item"
-          type="date"
-          :placeholder="`请选择${item.label}`"
-          :value-format="item.format"
+          type="month"
+          :value-format="item.format || 'yyyy-MM'"
+          :placeholder="item.placeholder || `请选择${item.label}`"
+          :editable="false"
           v-model="params[item.prop]"
           @change="handleDateSearch(item.prop)"
         />
       </template>
     </el-form-item>
     <!-- 按钮项 -->
-    <el-form-item class="button" :label="' '">
+    <el-form-item class="button">
       <el-button
         :size="cOptions.size"
         :round="cOptions.round"
         icon="el-icon-refresh-right"
         @click="handleReset"
+        v-show="cOptions.hasResetBtn"
       >
         重置
       </el-button>
@@ -131,8 +133,7 @@ export default {
     },
     // HD - 普通搜索
     handleSearch() {
-      const params = utils.delEmptyObjItem(this.params)
-      this.$emit('res', params)
+      this.$emit('res', this.params)
     },
     // HD - 普通清除
     handleClear(key) {
@@ -142,7 +143,7 @@ export default {
     // HD - 日期相关的搜索/清除
     handleDateSearch(key) {
       const val = this.params[key]
-      val ? this.handleSearch() : this.handleClear(key)
+      val === null ? this.handleClear(key) : this.handleSearch()
     }
   },
   created() {
@@ -150,7 +151,8 @@ export default {
       {
         size: 'mini', // 大小 - medium/small/mini
         round: true, // 是否圆角
-        labelWidth: 80 // 标签宽度(px)
+        labelWidth: 80, // 标签宽度(px)
+        hasResetBtn: true
       },
       this.options || {}
     )
@@ -169,6 +171,9 @@ export default {
   }
   ::v-deep .el-form-item {
     margin-bottom: 15px !important;
+  }
+  .button {
+    padding: 0 15px;
   }
 }
 </style>
