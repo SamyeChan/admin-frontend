@@ -74,11 +74,22 @@
           <template v-if="column.type === 'image'">
             <span
               v-if="typeof scope.row[column.prop] === 'string'"
-              style="display:inline-block;height:inherit;"
+              :style="
+                `display:inline-block;height:${
+                  column.imgHeight ? column.imgHeight + 'px' : 'inherit'
+                };`
+              "
             >
               <CImg :src="scope.row[column.prop] + (column.imgSuffix || '')" />
             </span>
-            <span v-else style="display:inline-block;height:inherit;">
+            <span
+              v-else
+              :style="
+                `display:inline-block;height:${
+                  column.imgHeight ? column.imgHeight + 'px' : 'inherit'
+                };`
+              "
+            >
               <CImg
                 :src="scope.row[column.prop][0] + (column.imgSuffix || '')"
               />
@@ -94,7 +105,9 @@
           <template v-if="column.type === 'button'">
             <template v-for="(btn, i) in column.group">
               <el-button
-                v-show="btn.showFlag === scope.row[btn.showProp]"
+                v-show="
+                  String(btn.showPropVal) === String(scope.row[btn.showProp])
+                "
                 :key="i"
                 :type="btn.type"
                 :size="btn.size || 'mini'"
