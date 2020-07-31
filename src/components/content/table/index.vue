@@ -42,7 +42,7 @@
           <template
             v-if="(!column.type || column.type === 'text') && !column.render"
           >
-            {{ scope.row[column.prop] }}
+            {{ scope.row[column.prop] || '/' }}
           </template>
 
           <!-- render dom -->
