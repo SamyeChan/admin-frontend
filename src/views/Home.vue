@@ -23,6 +23,8 @@
     </div>
     <!-- PC | 顶部栏 -->
     <div class="header-pc">
+      <!-- 门店切换 -->
+      <CStoreSwitch />
       <el-avatar class="header-pc-avatar" src="/default-avatar.png"></el-avatar>
       <el-dropdown
         class="header-pc-opt"
@@ -35,7 +37,10 @@
           <el-dropdown-item v-if="!isLogin" command="login"
             >登录</el-dropdown-item
           >
-          <el-dropdown-item v-else command="logout">退出</el-dropdown-item>
+          <template v-else>
+            <el-dropdown-item command="personal">个人设置</el-dropdown-item>
+            <el-dropdown-item command="logout">退出</el-dropdown-item>
+          </template>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -71,6 +76,7 @@
     <transition :name="transition">
       <div :class="isFold ? 'container fold' : 'container'">
         <CBreadcrumb v-if="BASE.HAS_BREADCRUMB" />
+        <!-- <div id="appContainer"></div> -->
         <keep-alive>
           <router-view v-if="$route.meta.keepAlive" />
         </keep-alive>
@@ -82,6 +88,7 @@
 
 <script>
 import BASE from '@/assets/baseConf'
+import CStoreSwitch from '@//components/layout/switch-store'
 import CMenu from '@/components/layout/menu'
 import CBreadcrumb from '@/components/layout/breadcrumb'
 import { mapState } from 'vuex'
@@ -96,6 +103,7 @@ export default {
     }
   },
   components: {
+    CStoreSwitch,
     CMenu,
     CBreadcrumb
   },
@@ -149,6 +157,9 @@ export default {
           break
         case 'login':
           getLoginUrl()
+          break
+        case 'personal':
+          this.$router.push('/basic/personal')
           break
       }
     },

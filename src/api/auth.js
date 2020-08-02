@@ -10,7 +10,7 @@ const prefix = '/auth' // 模块api前缀
 /**
  * GET | 用户信息 --> 登录后拿到用户【个人信息】，未登录则返回登陆页面地址（Md重定向）
  */
-export const getUserInfo = () => http({ url: `${prefix}/me` })
+export const getUserInfo = () => http({ url: `${prefix}/me0` })
 
 /**
  * GET | 用户权限路由 --> 登录后拿到用户【权限路由】，未登录则返回登陆页面地址（Md重定向）
@@ -30,6 +30,6 @@ export const logout = () => http({ url: `${prefix}/logout`, method: 'POST' })
 // - - - - - - - - - - - - - - - 其它 - - -
 
 /**
- * GET | 获取OSS临时凭证
+ * GET | 获取COS临时凭证
  */
 export const getToken = () => http({ url: `${prefix}/getToken` })

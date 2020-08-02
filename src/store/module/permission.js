@@ -1,4 +1,5 @@
 import { getUserInfo, getUserMenu } from '@/api/auth'
+import { getOrg } from '@/api/basic'
 import types from '../types'
 import router, { resetRouter } from '@/router'
 import { Error404 } from '@/router/constant'
@@ -9,7 +10,8 @@ const util = new UtilMethods()
 export default {
   state: {
     userInfo: null, // 用户信息
-    permissionRoutes: [] // router最终挂载的路由
+    permissionRoutes: [], // router最终挂载的路由
+    orgActive: null // 用户当前选中门店
   },
   mutations: {
     // 设置用户信息
@@ -19,32 +21,43 @@ export default {
     // 设置权限路由
     [types.SET_MOUNTED_ROUTES]: (state, data) => {
       state.permissionRoutes = data
+    },
+    // 设置用户当前选中组织
+    [types.SET_ORG]: (state, data) => {
+      state.orgActive = data
     }
   },
   actions: {
     // 获取用户信息，并存入vuex（持久化）--> 用户信息请求成功后才进行权限路由请求
     [types.ASYNC_GET_USER_INFO_MENU]: ({ commit }) => {
       return new Promise((resolve, reject) => {
-        getUserInfo()
-          .then(resData1 => {
-            commit(types.SET_USER_INFO, { user: resData1 })
-            getUserMenu()
-              .then(resData2 => {
-                const userInfo = {
-                  user: resData1,
-                  menu: resData2
-                }
-                commit(types.SET_USER_INFO, userInfo)
-                resolve(userInfo)
-              })
-              .catch(err2 => {
-                reject(err2)
-              })
-          })
-          .catch(err1 => {
-            commit(types.SET_USER_INFO, null)
-            reject(err1)
-          })
+        const fn = async function() {
+          try {
+            let res1
+            try {
+              res1 = await getUserInfo()
+            } catch (err1) {
+              commit(types.SET_USER_INFO, null)
+              reject(err1)
+            }
+            const res2 = await getOrg()
+            commit(types.SET_USER_INFO, {
+              user: res1,
+              org: res2
+            })
+            const res3 = await getUserMenu()
+            const userInfoMenu = {
+              user: res1,
+              org: res2,
+              menu: res3
+            }
+            commit(types.SET_USER_INFO, userInfoMenu)
+            resolve(userInfoMenu)
+          } catch (err) {
+            reject(err)
+          }
+        }
+        fn()
       })
     },
     // 挂载权限路由 --> 通过后台传回的权限，生成权限路由并进行挂载

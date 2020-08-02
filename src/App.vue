@@ -1,6 +1,6 @@
 <template>
   <div
-    id="app"
+    id="app-main"
     v-loading="loading"
     :element-loading-text="`${BASE.TITLE_ABBR} 拼命加载中...`"
   >
@@ -54,7 +54,7 @@ export default {
       }
 
       let permissionArr = filterMenu(this.permissionRoutes, '*')
-      let constantArr = filterMenu(constantRoutes, '/')
+      let constantArr = filterMenu(util.deepCopy(constantRoutes), '/')
       // 静态路由会放置在动态路由前面
       permissionArr = constantArr.concat(permissionArr)
 
@@ -105,7 +105,7 @@ export default {
 <style lang="scss">
 html,
 body,
-#app {
+#app-main {
   margin: 0px;
   padding: 0px;
   // background-color: #f0f2f5;
@@ -116,10 +116,10 @@ html,
 body {
   overflow: hidden;
 }
-#app {
+#app-main {
   overflow: auto !important;
 }
-#app {
+#app-main {
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
     'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -129,7 +129,7 @@ body {
 @media screen and (max-width: 600px) {
   html,
   body,
-  #app {
+  #app-main {
     width: 100%;
     height: 100%;
   }

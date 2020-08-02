@@ -7,7 +7,10 @@ Vue.use(Vuex)
 
 const vuexLocal = new VuexPersistence({
   storage: window.sessionStorage,
-  reducer: state => ({ userInfo: state.permission.userInfo }) // 只对userinfo进行持久化
+  reducer: state => ({
+    userInfo: state.permission.userInfo,
+    orgActive: state.permission.orgActive
+  }) // 只对userinfo进行持久化
 })
 
 export default new Vuex.Store({

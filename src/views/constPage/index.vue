@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <!-- <div>
     <iframe src="" />
-  </div>
+  </div> -->
+  <router-view />
 </template>
 
 <script>

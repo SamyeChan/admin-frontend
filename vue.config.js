@@ -11,15 +11,9 @@ module.exports = {
     disableHostCheck: true,
     port: 8082,
     proxy: {
-      '/auth': {
-        target: 'https://yapi.leayun.cn/mock/142', // YApi
-        changeOrigin: true,
-        pathRewrite: {}
-      },
       '/proj': {
-        target: 'https://yapi.leayun.cn/mock/142', // YApi
-        changeOrigin: true,
-        pathRewrite: {}
+        target: 'http://yapi.leayun.cn/mock/142', // YApi
+        changeOrigin: true
       }
     }
   }

@@ -1,0 +1,104 @@
+.img-upload {
+  &__prog {
+    margin: 10px;
+  }
+  .image {
+    width: 148px;
+    height: 148px;
+    line-height: 148px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 10px 10px 0;
+    &-add {
+      background-color: #fbfdff;
+      border: 1px dashed #c0ccda;
+      border-radius: 6px;
+      box-sizing: border-box;
+      cursor: pointer;
+      line-height: 146px;
+      vertical-align: top;
+      display: inline-block;
+      text-align: center;
+      outline: none;
+      &__icon {
+        font-size: 28px;
+        color: #8c939d;
+      }
+      .upload__btn {
+        opacity: 0;
+        width: inherit;
+        height: inherit;
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+    // 检查后无数据
+    &-checkNul {
+      border: 1px dashed #f56c6c;
+      &__tip {
+        display: inline-block;
+        color: #f56c6c;
+        font-size: 12px;
+      }
+    }
+    // 图片容器
+    &-item {
+      position: relative;
+      // 图片
+      &__click {
+        position: relative;
+        z-index: 98;
+        border: 0;
+      }
+      &__icon {
+        width: 70px;
+        height: 26px;
+        font-size: 26px;
+        position: absolute;
+        // top: calc(50% - 20px);
+        // right: calc(50% - 35px);
+        // color: #ebeef5;
+        top: -60px;
+        right: -20px;
+        z-index: 99;
+        color: #777;
+        text-align: center;
+        i {
+          width: 35px;
+        }
+        i:hover {
+          color: #000;
+        }
+      }
+      &__mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 148px;
+        height: 148px;
+        background: rgba(0, 0, 0, 0.3);
+      }
+    }
+    &-null {
+      display: inline-block;
+      padding: 0 10px;
+      border-radius: 3px;
+      background: #f5f7fa;
+      color: #c0c4cc;
+    }
+  }
+  .image:hover {
+    cursor: pointer;
+  }
+  .desciption {
+    clear: both;
+  }
+}
