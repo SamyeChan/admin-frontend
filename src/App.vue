@@ -9,7 +9,7 @@
     <!-- 无权限页面 -->
     <CNoAuth v-if="!loading && !hasAuth && !notFound" />
     <!-- 404 -->
-    <router-view name="notFound" v-if="hasAuth && notFound" />
+    <router-view name="notFound" v-if="!loading && hasAuth && notFound" />
   </div>
 </template>
 

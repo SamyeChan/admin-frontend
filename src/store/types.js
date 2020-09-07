@@ -7,5 +7,7 @@ export default {
   // 保存用户信息 -- mutations
   SET_USER_INFO: 'SET_USER_INFO',
   // 挂载的路由
-  SET_MOUNTED_ROUTES: 'SET_MOUNTED_ROUTES'
+  SET_MOUNTED_ROUTES: 'SET_MOUNTED_ROUTES',
+  // 设置选中门店
+  SET_ACTIVE_ORG: 'SET_ACTIVE_ORG'
 }
