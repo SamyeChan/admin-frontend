@@ -1,11 +1,5 @@
-import { getUserInfo, getUserMenu } from '@/api/auth'
-import { getOrg } from '@/api/basic'
+import { getUserInfo } from '@/api/auth'
 import types from '../types'
-import router, { resetRouter } from '@/router'
-import { Error404 } from '@/router/constant'
-import { dynamicRoutes } from '@/router/dynamic'
-import { UtilMethods } from '@/utils'
-const util = new UtilMethods()
 
 export default {
   state: {
@@ -17,14 +11,6 @@ export default {
     // 设置用户信息
     [types.SET_USER_INFO]: (state, data) => {
       state.userInfo = data
-    },
-    // 设置权限路由
-    [types.SET_MOUNTED_ROUTES]: (state, data) => {
-      state.permissionRoutes = data
-    },
-    // 设置用户当前选中组织
-    [types.SET_ORG]: (state, data) => {
-      state.orgActive = data
     }
   },
   actions: {
@@ -33,102 +19,21 @@ export default {
       return new Promise((resolve, reject) => {
         const fn = async function() {
           try {
-            let res1
+            let userInfo
             try {
-              res1 = await getUserInfo()
+              userInfo = await getUserInfo()
             } catch (err1) {
               commit(types.SET_USER_INFO, null)
               reject(err1)
             }
-            const res2 = await getOrg()
-            commit(types.SET_USER_INFO, {
-              user: res1,
-              org: res2
-            })
-            const res3 = await getUserMenu()
-            const userInfoMenu = {
-              user: res1,
-              org: res2,
-              menu: res3
-            }
-            commit(types.SET_USER_INFO, userInfoMenu)
-            resolve(userInfoMenu)
+            commit(types.SET_USER_INFO, userInfo)
+            resolve(userInfo)
           } catch (err) {
             reject(err)
           }
         }
         fn()
       })
-    },
-    // 挂载权限路由 --> 通过后台传回的权限，生成权限路由并进行挂载
-    [types.MOUNT_PERMISSION_ROUTES]: ({ commit }, permissionList) => {
-      return new Promise((resolve, reject) => {
-        if (util.checkDataType(permissionList) === 'array') {
-          let mountedRoutes = util.deepCopy(dynamicRoutes)
-          // 生成权限路由
-          generatePermissionRoutes(mountedRoutes, permissionList)
-          console.log('mountedRoutes', mountedRoutes)
-          // 404处理
-          mountedRoutes.push({
-            path: '*',
-            name: 'error404',
-            components: {
-              notFound: Error404
-            }
-          })
-          // 重置路由 --> 恢复至无权状态
-          resetRouter()
-          // 挂载权限路由
-          router.addRoutes(mountedRoutes)
-          // 保存重置redirect后的权限路由，供菜单使用
-          commit(types.SET_MOUNTED_ROUTES, mountedRoutes)
-          resolve(mountedRoutes)
-        } else {
-          console.error(
-            `${types.MOUNT_DYNAMIC_ROUTER} permissionList: param is not array`
-          )
-          reject(new Error('用户权限出错!'))
-        }
-      })
-    }
-  }
-}
-
-/**
- * 动态路由表中筛选出有权限的路由表
- * 支持递归深度筛选，筛选标识name
- * @param {Array} dynamicRoutes 前端动态路由表
- * @param {Array} permissionList 后台传回的权限路由表
- */
-function generatePermissionRoutes(dynamicRoutes, permissionList) {
-  if (util.checkDataType(dynamicRoutes) === 'array') {
-    for (var i = 0; i < dynamicRoutes.length; i++) {
-      let isMatch = false // 是否匹配（动态路由 vs 权限路由）
-      let matchIndex = null // 匹配的权限路由下标
-      for (let j in permissionList) {
-        //! FIXME - 用name匹配比较好 --> 但修改的话需要md配合
-        if (dynamicRoutes[i].name === permissionList[j].name) {
-          dynamicRoutes[i].meta = Object.assign(
-            dynamicRoutes[i].meta,
-            permissionList[j].meta
-          ) // meta：title/isMenu 从md后台获取
-          isMatch = true
-          matchIndex = j
-          break
-        }
-      }
-      // 若无匹配项，则去除该路由
-      if (!isMatch) {
-        dynamicRoutes.splice(i, 1)
-        i--
-      }
-      // 若含匹配项，继续匹配其子路由
-      if (isMatch && dynamicRoutes[i].children) {
-        generatePermissionRoutes(
-          dynamicRoutes[i].children,
-          permissionList[matchIndex].children
-        )
-      }
     }
   }
 }

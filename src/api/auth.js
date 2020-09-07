@@ -18,7 +18,7 @@ export const getUserInfo = () => http({ url: `${prefix}/me0` })
 export const getUserMenu = () => http({ url: `${prefix}/menu0` })
 
 /**
- * GET | 获取登录或登出成功后的重定向地址 //! 这是个啥子
+ * GET | 获取登录或登出成功后的重定向地址
  */
 export const getLoginUrl = () => http({ url: `${prefix}/sign_in` })
 

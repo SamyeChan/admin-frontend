@@ -1,13 +1,13 @@
 <template>
   <div>
-    <router-view />
+    OnePage
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Table' // 表格页
+  name: 'OnePage'
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped></style>

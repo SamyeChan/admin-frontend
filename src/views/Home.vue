@@ -23,9 +23,10 @@
     </div>
     <!-- PC | 顶部栏 -->
     <div class="header-pc">
-      <!-- 门店切换 -->
-      <CStoreSwitch />
-      <el-avatar class="header-pc-avatar" src="/default-avatar.png"></el-avatar>
+      <el-avatar
+        class="header-pc-avatar"
+        :src="require('@/assets/default-avatar.png')"
+      ></el-avatar>
       <el-dropdown
         class="header-pc-opt"
         @command="handleCommand"
@@ -38,7 +39,6 @@
             >登录</el-dropdown-item
           >
           <template v-else>
-            <el-dropdown-item command="personal">个人设置</el-dropdown-item>
             <el-dropdown-item command="logout">退出</el-dropdown-item>
           </template>
         </el-dropdown-menu>
@@ -47,10 +47,17 @@
     <!-- 侧边栏 -->
     <div :class="isPhFold ? 'aside fold' : 'aside'">
       <div :class="isFold ? 'header-pc-sys fold' : 'header-pc-sys'">
-        <span>{{ BASE.TITLE_CN }}</span>
-        <span style="font-size: 16px; margin-left: 10px;">
+        <el-avatar
+          class="header-pc-logo"
+          size="medium"
+          :src="BASE.TITLE_LOGO"
+        />
+        <span :class="isFold ? 'header-pc-title fold' : 'header-pc-title'">
+          {{ BASE.TITLE_CN }}</span
+        >
+        <!-- <span style="font-size: 16px; margin-left: 10px;">
           {{ BASE.TITLE_SUB }}
-        </span>
+        </span> -->
         <el-tooltip
           :content="isFold ? '展开菜单栏' : '收起菜单栏'"
           placement="right"
@@ -76,7 +83,6 @@
     <transition :name="transition">
       <div :class="isFold ? 'container fold' : 'container'">
         <CBreadcrumb v-if="BASE.HAS_BREADCRUMB" />
-        <!-- <div id="appContainer"></div> -->
         <keep-alive>
           <router-view v-if="$route.meta.keepAlive" />
         </keep-alive>
@@ -88,7 +94,6 @@
 
 <script>
 import BASE from '@/assets/baseConf'
-import CStoreSwitch from '@//components/layout/switch-store'
 import CMenu from '@/components/layout/menu'
 import CBreadcrumb from '@/components/layout/breadcrumb'
 import { mapState } from 'vuex'
@@ -103,7 +108,6 @@ export default {
     }
   },
   components: {
-    CStoreSwitch,
     CMenu,
     CBreadcrumb
   },
@@ -157,9 +161,6 @@ export default {
           break
         case 'login':
           getLoginUrl()
-          break
-        case 'personal':
-          this.$router.push('/basic/personal')
           break
       }
     },
@@ -256,10 +257,17 @@ export default {
       i:hover {
         cursor: pointer;
       }
-      &-logo {
-        margin-top: 10px;
-        background: none !important;
-      }
+    }
+    &-logo {
+      vertical-align: middle;
+      margin: 8px;
+      background: none !important;
+    }
+    &-title {
+      // display: inline-block;
+    }
+    &-title.fold {
+      display: none;
     }
     // 系统logo栏 --> 折叠
     &-sys.fold {

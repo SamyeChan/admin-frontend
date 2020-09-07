@@ -1,14 +1,19 @@
-export const Error404 = () =>
-  import(/* webpackChunkName: 'Error404' */ '@/views/Error404')
-// 基础信息
-const BasicSet = () =>
-  import(/* webpackChunkName: 'BasicSet' */ '@/views/basicSet')
-const StoreInfo = () =>
-  import(/* webpackChunkName: 'BasicStoreInfo' */ '@/views/basicSet/StoreInfo')
-const PersonalSet = () =>
+// - - - - - - 路由容器 - - -
+const PageWrapper = () =>
   import(
-    /* webpackChunkName: 'BasicPersonalSet' */ '@/views/basicSet/PersonalSet'
+    /* webpackChunkName: 'PageWrapper' */ '@/components/layout/PageWrapper'
   )
+
+// - - - - - - demo页面 - - -
+const OnePage = () =>
+  import(/* webpackChunkName: 'OnePage' */ '@/views/demoPage/One')
+const TwoPage = () =>
+  import(/* webpackChunkName: 'TwoPage' */ '@/views/demoPage/Two')
+
+// - - - - - - 404页面 - - -
+const Error404 = () =>
+  import(/* webpackChunkName: 'Error404' */ '@/views/Error404')
+
 /**
  * 路由配置 | 固定路由
  * @description 无权限限制路由
@@ -28,36 +33,55 @@ export const constantRoutes = [
   {
     path: '/'
   },
-  // - - - - - - - - - - - - - - - - 基础模块 - - -
+  // - - - - 同级单页面 - - - -
   {
-    path: '/basic/store',
-    name: 'basic',
-    component: BasicSet,
+    name: 'demoSingle',
+    path: '/demoS',
+    component: OnePage,
     meta: {
-      title: '门店信息',
+      title: 'DEMO-single',
+      isMenu: true,
+      icon: 'el-icon-document'
+    }
+  },
+  // - - - - 同级多页面 - - - -
+  {
+    name: 'demoMulti',
+    path: '/demoM',
+    redirect: '/demoM/one',
+    component: PageWrapper,
+    meta: {
+      title: 'DEMO-multiple',
       isMenu: true,
       icon: 'el-icon-document'
     },
     children: [
       {
-        path: '/basic/store',
-        name: 'storeInfo',
-        component: StoreInfo,
+        name: 'demoOne',
+        path: 'one',
+        component: OnePage,
         meta: {
-          // pTitle: '门店信息',
-          title: '详情'
-          // isMenu: true
+          title: 'One',
+          isMenu: true
         }
       },
       {
-        path: '/basic/personal',
-        name: 'personalSet',
-        component: PersonalSet,
+        name: 'demoTwo',
+        path: 'two',
+        component: TwoPage,
         meta: {
-          title: '个人设置'
-          // isMenu: true
+          title: 'Two',
+          isMenu: true
         }
       }
     ]
+  },
+  // - - - - 404页面 - - - -
+  {
+    path: '*',
+    name: 'error404',
+    components: {
+      notFound: Error404
+    }
   }
 ]

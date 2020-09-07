@@ -17,7 +17,6 @@
 import BASE from '@/assets/baseConf'
 import CNoAuth from './views/NoAuth'
 import CHome from './views/Home'
-import { mapState } from 'vuex'
 import { constantRoutes } from '@/router/constant'
 import { UtilMethods } from '@/utils'
 
@@ -35,9 +34,6 @@ export default {
     }
   },
   computed: {
-    ...mapState({
-      permissionRoutes: state => state.permission.permissionRoutes
-    }),
     // 侧边菜单列表 --> 权限判断依据
     menuList() {
       // 遍历所有项（包括children），过滤出路由中的菜单项
@@ -53,20 +49,20 @@ export default {
         return menu
       }
 
-      let permissionArr = filterMenu(this.permissionRoutes, '*')
       let constantArr = filterMenu(util.deepCopy(constantRoutes), '/')
-      // 静态路由会放置在动态路由前面
-      permissionArr = constantArr.concat(permissionArr)
 
-      return this.handleChildrenPath(permissionArr)
+      return this.handleChildrenPath(constantArr)
     }
   },
   watch: {
-    menuList(val) {
-      this.hasAuth = val.length > 0
-      setTimeout(() => {
-        this.loading = false
-      }, 1000)
+    menuList: {
+      handler(val) {
+        this.hasAuth = val.length > 0
+        setTimeout(() => {
+          this.loading = false
+        }, 1000)
+      },
+      immediate: true
     },
     '$route.name'(val) {
       this.notFound = val === 'error404'

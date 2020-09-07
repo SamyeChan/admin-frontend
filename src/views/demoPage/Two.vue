@@ -1,13 +1,13 @@
 <template>
   <div>
-    <router-view />
+    TwoPage
   </div>
 </template>
 
 <script>
 export default {
-  name: 'RouterView1' // 模块路由
+  name: 'TwoPage'
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped></style>
