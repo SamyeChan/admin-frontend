@@ -1,4 +1,4 @@
-# admin-frontend 后台管理系统脚手架（不接 MD）
+# admin-frontend 后台管理系统脚手架（简易版：不接 MD）
 
 ```
 @startTime --> 20200701
