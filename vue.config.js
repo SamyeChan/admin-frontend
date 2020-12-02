@@ -12,12 +12,12 @@ module.exports = {
     port: 8082,
     proxy: {
       '/auth': {
-        target: 'https://yapi.leayun.cn/mock/142', // YApi
+        target: 'http://yapi.leayun.cn/mock/142', // YApi
         changeOrigin: true,
         pathRewrite: {}
       },
       '/proj': {
-        target: 'https://yapi.leayun.cn/mock/142', // YApi
+        target: 'http://yapi.leayun.cn/mock/142', // YApi
         changeOrigin: true,
         pathRewrite: {}
       }
