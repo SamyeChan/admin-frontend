@@ -17,7 +17,10 @@
     - - - - -          
       @config      -> 配置描述，如下：  
 
+      1. 组件配置项：
         A.type[搜索框类型]： input / select / date  / time / datetime；
+
+      2. 组件返回项：
         X.父组件响应: @res -> 返回搜索参数 - 如：resSearch(params) { ... } 
 
     - - - - -
