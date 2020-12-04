@@ -1,4 +1,20 @@
 <template>
+  <!-- 【Toolbar 操作组】
+
+      @description -> 1. 基于element-ui；
+                      2. 剥离于GR > B端系统；
+                      3. 功能描述：
+        A.
+        B.
+        C.
+
+    - - - - - 
+      @config      -> 
+
+    - - - - - 
+      @starttime   -> 202012xx
+      @author      -> SamyeChan
+  -->
   <el-row class="toolbar" :style="`text-align:${cOptions.position};`">
     <span
       class="btn"

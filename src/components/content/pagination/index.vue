@@ -1,4 +1,20 @@
 <template>
+  <!-- 【Pagination 分页】
+
+      @description -> 1. 基于element-ui；
+                      2. 剥离于GR > B端系统；
+                      3. 功能描述：
+        A.
+        B.
+        C.
+
+    - - - - - 
+      @config      -> 
+
+    - - - - - 
+      @starttime   -> 始于2019，整理于20201204
+      @author      -> SamyeChan
+  -->
   <div class="pagination" :style="`text-align: ${position};`">
     <div class="pagination-content">
       <el-pagination

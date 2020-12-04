@@ -1,16 +1,28 @@
 <template>
-  <!-- 【搜索组件Search】
+  <!-- 【Search 搜索】
 
-      A.搜索框类型(type): 01. input[默认值] - 输入框；
-                          02. select - 下拉选择框；
-                          03. date - 日期选择；
-                          04. time - 时间选择；
-                          05. datetime - 日期时间选择；
-      B.操作按钮: 01. Enter键入搜索；
-                  02. 按钮点击搜索；
-                  03. 重置点击请求；
-                  04. 搜索框项的清空请求；
-      C.父组件响应: @res - 返回搜索参数 - resSearch(params) { ... } 
+      @description -> 1. 剥离于GR > B端系统；
+                      2. 个人想法比较多；
+                      3. 功能描述：
+        A.搜索框支持类型：01. input[默认] - 输入框；
+                          02. select      - 下拉选择框；
+                          03. date        - 日期选择；
+                          04. time        - 时间选择；
+                          05. datetime    - 日期时间选择；
+        B.操作: 01. 搜索按钮点击请求；
+                02. Enter键入请求；
+                03. 重置按钮点击请求；
+                04. 搜索项清空请求；
+                05. 下拉框值变请求；
+    - - - - -          
+      @config      -> 配置描述，如下：  
+
+        A.type[搜索框类型]： input / select / date  / time / datetime；
+        X.父组件响应: @res -> 返回搜索参数 - 如：resSearch(params) { ... } 
+
+    - - - - -
+      @starttime   -> 20201102
+      @author      -> SamyeChan
     -->
   <el-form
     class="search"

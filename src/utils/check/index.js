@@ -11,7 +11,7 @@ export class UtilChecks {
    *   3- 前后去空； 
    * @param {*} value 
    */
-  val_trim(value) {
+  val2String(value) {
     return String(value).trim()
   }
 

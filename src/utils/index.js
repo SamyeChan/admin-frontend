@@ -1,17 +1,123 @@
-// 公共类
-
 /**
  * 公共基础方法类
+ *  01. UtilMethods
  */
 export class UtilMethods {
+
+  // - - - - - - - - - - - - I. 判断 - - -
+
+   /**
+   * 【判断是否为指定的数据类型】
+   * 
+   * @description 
+   * - 数据类型
+   *   01.简单/原始数据类型：Undefined、Null、Boolean、Number、String、Symbol
+   *   02.复杂数据类型：Object（Array、Function、Data）
+   * - 判断方式 --> typeof
+   * 
+   * @return {Boolean}
+   */
+
+  isUndefined(object) {
+    return typeof object === 'undefined'
+  }
+  
+  isNull(object) {
+    return !object && typeof object === 'object' && object == undefined
+  }
+
+  isBoolean(object) {
+    return typeof object === 'boolean'
+  }
+
+  // isFinite() --> 判断参数是否为一个有限数值
+  isNumber(object) {
+    return typeof object === 'number' && isFinite(object)
+  }
+
+  isString(object) {
+    return typeof object === 'string'
+  }
+
+  isSymbol(object) {
+    return typeof object === 'symbol'
+  }
+
+  // 此处Object包含对象、数组、方法，及null
+  isObject(object) {
+    return typeof object === 'object'
+  }
+
+  // 函数在ECMA中被认为是对象，但其不是一种数据类型
+  isFunction(object) {
+    return typeof object === 'function'
+  }
+
   /**
-   * 深度拷贝,递归实现
+   * 判断数组的方法: 01. Array.isArray(obj) 
+   *                 02. obj instanceof Array
+   *                 03. obj.constructor === Array
+   */
+  isArray(object) {
+    return Array.isArray(object)
+  }
+
+  /**
+   * 【检测参数的数据类型】
+   * null|number|object|array|undefined|boolean|string|symbol|function
+   * 
+   * @return {String}
+   */
+  checkDataType(d) {
+    // null
+    if (this.isNull(d)) {
+      return 'null'
+    }
+    // number
+    if (this.isNumber(d)) {
+      return 'number'
+    }
+    // object|array
+    if (this.isObject(d)) {
+      if (this.isArray(d)) {
+        return 'array'
+      } else {
+        return 'object'
+      }
+    }
+    // undefined|boolean|string|symbol|function
+    return typeof d
+  }
+
+  /**
+   * 【检查参数是否为空】
+   * 
+   * @description 认定为空的数据：null undefined NaN '' {} []
+   * 
+   * @return {Boolean}
+   */
+  checkIsEmpty(d) {
+    // 过滤Boolean：true/false
+    if (this.isBoolean(d)) return false
+    // 过滤数字：解决误删0/1设置下的0
+    if (this.isNumber(d)) return false
+    // 校验：null undefined NaN ''
+    if (!d) return true
+    // 校验：{} []
+    if (JSON.stringify(d) === '{}' || JSON.stringify(d) === '[]') return true
+    return false
+  }
+
+  // - - - - - - - - - - - - II. 操作 - - -
+
+  /**
+   * 深度拷贝，递归实现
    * @param {*} d
    */
   deepCopy(d) {
     let clone
     if (d && typeof d === 'object') {
-      // 引用类型(array,object)
+      // 引用类型(array, object)
       clone = Array.isArray(d) ? [] : {}
       for (let key in d) {
         if (typeof d[key] === 'object' && d[key]) {
@@ -24,36 +130,6 @@ export class UtilMethods {
       clone = d
     }
     return clone
-  }
-
-  /**
-   * 检查是否为空
-   * null undefined NaN 0 '' {} []
-   * @param {*} d
-   * @return {Boolean}
-   */
-  checkIsEmpty(d) {
-    if (!d) return true
-    if (JSON.stringify(d) === '{}' || JSON.stringify(d) === '[]') return true
-    return false
-  }
-
-  /**
-   * 检测数据类型: string|number|undefined|null|array|function|object
-   */
-  checkDataType(d) {
-    if (typeof d === 'object') {
-      if (d) {
-        if (Array.isArray(d)) {
-          return 'array'
-        } else {
-          return 'object'
-        }
-      } else {
-        return 'null'
-      }
-    }
-    return typeof d
   }
 
   /**
@@ -73,6 +149,27 @@ export class UtilMethods {
     } else {
       console.error('delEmptyObjItem error: param is not object')
     }
+  }
+
+  /**
+   * 为字符串类型的属性去掉空格
+   * 支持对象，数组；不支持递归
+   */
+  trimString(params) {
+    if (params) {
+      if (typeof params === 'object') {
+        for (let key in params) {
+          if (typeof params[key] === 'string') {
+            params[key] = params[key].trim()
+          }
+        }
+      }
+      if (typeof params === 'string') {
+        return params.trim()
+      }
+      return params
+    }
+    return params
   }
 
   /**
@@ -123,27 +220,6 @@ export class UtilMethods {
       }
       return false
     }
-  }
-
-  /**
-   * 为字符串类型的属性去掉空格
-   * 支持对象，数组；不支持递归
-   */
-  trimString(params) {
-    if (params) {
-      if (typeof params === 'object') {
-        for (let key in params) {
-          if (typeof params[key] === 'string') {
-            params[key] = params[key].trim()
-          }
-        }
-      }
-      if (typeof params === 'string') {
-        return params.trim()
-      }
-      return params
-    }
-    return params
   }
 }
 

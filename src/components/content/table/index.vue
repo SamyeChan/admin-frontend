@@ -1,4 +1,20 @@
 <template>
+  <!-- 【Table 表格】
+
+      @description -> 1. 基于element-ui；
+                      2. 剥离于GR > B端系统；
+                      3. 在各个业务迭代中完善，涉及：GR - Md、Ark、Venus、Hermes、Zeus等；
+                      4. 功能描述：
+        A.
+        B.
+        C.
+    - - - - - 
+      @config      -> 
+
+    - - - - - 
+      @starttime   -> 始于2019，整理于20201204
+      @author      -> SamyeChan
+  -->
   <el-table
     ref="tb"
     v-loading="options.loading"
