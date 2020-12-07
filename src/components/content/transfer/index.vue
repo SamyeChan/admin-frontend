@@ -24,30 +24,34 @@
       1. 组件配置项：
         A. data        - 所有数据列表 - 【必须】；
         B. checked     - 已选数据列表；
-        C. min         - 最少选择项；
-        D. max         - 最多选择项；
-        E. defaultImg  - 图片默认项；
-        F. icon        - 选框中间图标；
-        G. hadTitle    - 是否带有列表标题；
-        H. canCheckConfig  - 待选列表配置项；
+        C. optionDF    - 选项数据结构定义；
+        D. min         - 最少选择项；
+        E. max         - 最多选择项；
+        F. defaultImg  - 图片默认项；
+        G. icon        - 选框中间图标（暂仅支持element-ui icon）；
+        H. hadTitle    - 是否带有列表标题；
+        I. canCheckConfig  - 待选列表配置项；
           1. title       - 待选项标题；
           2. nullText    - 无数据文案；
           3. search      - true / false - 是否开启待选项含搜索功能；
           4. searchText  - 搜索框文案；
-        I. checkedConfig - 已选列表配置项；
+        J. checkedConfig - 已选列表配置项；
           1. title       - 已选项标题；
           2. nullText    - 无数据文案；
           3. sort        - true / false - 是否开启已选项顺序调整功能；
+        K. submitText  - 确认按钮文案
+        L. cancelText  - 取消按钮文案
 
       2. 组件返回项：
-        A. @res - 返回
+        A. @on-cancel - 取消
+        B. @on-submit - 确认（按条件触发数量限制判定）
 
     - - - - -
       @starttime -> 20201204
       @author    -> SamyeChan
   -->
   <el-container>
-    <!-- 选择项 -->
+    <!-- 待选项 -->
     <el-card shadow="never" class="card">
       <el-row slot="header">
         <el-row class="card-title" v-if="hadTitle">
@@ -56,22 +60,24 @@
         <el-row>
           <el-input
             class="card-input"
-            maxlength="100"
             size="mini"
+            maxlength="100"
             prefix-icon="el-icon-search"
             :placeholder="canCheckConf.searchText"
-            v-model="searchParamm"
-            @keyup.native.enter="onSearch(searchParam)"
+            v-model="searchParam"
+            clearable
+            @clear="onClear"
+            @input="onSearch(searchParam)"
           ></el-input>
         </el-row>
       </el-row>
       <div class="card-list">
-        <div class="null" v-if="dataArr.length === 0">
+        <div class="null" v-if="searchArr.length === 0">
           {{ canCheckConf.nullText }}
         </div>
         <div
           class="item"
-          v-for="item of dataArr"
+          v-for="item of searchArr"
           :key="item.val"
           @click="onCheck(item)"
         >
@@ -84,7 +90,7 @@
     </el-card>
     <!-- 操作按钮 -->
     <span class="option">
-      <i class="el-icon-link"></i>
+      <i :class="icon"></i>
     </span>
     <!-- 已选项 -->
     <el-card shadow="never" class="card">
@@ -110,6 +116,7 @@
               <CImg :hasText="false" :src="item.img" />
             </span>
             <span class="text">{{ item.label }}</span>
+            <!-- 按钮组 -->
             <el-tooltip effect="dark" content="取消关联" placement="left">
               <el-button
                 class="btn"
@@ -132,6 +139,19 @@
         </Vdraggable>
       </div>
     </el-card>
+    <div class="footer-btns">
+      <el-button
+        type="primary"
+        size="small"
+        @click="onSubmit"
+        :disabled="checkedArr.length === 0"
+      >
+        {{ submitText }}
+      </el-button>
+      <el-button size="small" @click="$emit('on-cancel')">
+        {{ cancelText }}
+      </el-button>
+    </div>
   </el-container>
 </template>
 
@@ -154,6 +174,31 @@ export default {
             val: 1,
             label: '项1',
             img: ''
+          },
+          {
+            val: 2,
+            label: '项2',
+            img: ''
+          },
+          {
+            val: 3,
+            label: '项3',
+            img: ''
+          },
+          {
+            val: 4,
+            label: '项4',
+            img: ''
+          },
+          {
+            val: 5,
+            label: '项5',
+            img: ''
+          },
+          {
+            val: 6,
+            label: '项6',
+            img: ''
           }
         ]
       }
@@ -163,6 +208,13 @@ export default {
       type: Array,
       default() {
         return []
+      }
+    },
+    // TODO - 选项结构定义
+    optionDF: {
+      type: Array,
+      default() {
+        return ['val', 'label', 'img']
       }
     },
     // 可选最小值
@@ -185,7 +237,7 @@ export default {
       type: String,
       default: ''
     },
-    // 选框中间图标
+    // 选框中间图标（暂仅支持element-ui icon）
     icon: {
       type: String,
       default: ''
@@ -197,15 +249,25 @@ export default {
     // 已选项配置
     checkedConfig: {
       type: Object
+    },
+    // 确认按钮文本
+    submitText: {
+      type: String,
+      default: '确 定'
+    },
+    // 取消按钮文本
+    cancelText: {
+      type: String,
+      default: '取 消'
     }
   },
   components: { CImg, Vdraggable },
   data() {
     return {
       drag: false, // 拖拽
-      searchParamm: null, // 搜索参数
-      dataArr: util.deepCopy(this.data), // 所有数据列表
+      searchParam: null, // 搜索参数
       canCheckArr: [], // 待选列表
+      searchArr: [], // 搜索列表（实际显示待选列表）
       checkedArr: util.deepCopy(this.checked), // 已选列表
       // 待选列表配置项
       canCheckConf: {
@@ -223,35 +285,79 @@ export default {
     }
   },
   methods: {
+    // INIT - 初始化数据（传入vs当前）
+    initData() {
+      // TODO - - - - - 01 选项数据结构规整
+      // let arr = []
+      // this.data.forEach(v => {
+      //   let obj = {}
+      //   this.optionDF[0] && (obj.val = v[this.optionDF[0]])
+      //   this.optionDF[1] && (obj.label = v[this.optionDF[1]])
+      //   this.optionDF[2] && (obj.img = v[this.optionDF[2]])
+      //   arr.push(obj)
+      // })
+      // - - - - - 02 过滤已选列表值得出待选列表
+      const checkedValsArr = this.checked.map(item => item.val)
+      this.canCheckArr = this.data.filter(
+        item => checkedValsArr.indexOf(item.val) === -1
+      )
+      // 实际待选列表（搜索列表）同时得到赋值
+      this.searchArr = util.deepCopy(this.canCheckArr)
+      // - - - - - 03 传入项覆盖默认设置
+      this.canCheckConfig &&
+        (this.canCheckConf = Object.assign(
+          this.canCheckConf,
+          this.canCheckConfig
+        ))
+      this.checkedConfig &&
+        (this.checkedConf = Object.assign(this.checkedConf, this.checkedConfig))
+    },
     // ON - 选择
     onCheck(item) {
-      this.dataArr = this.dataArr.filter(v => v.val !== item.val)
+      // 数量限制判定 - 最大值
+      if (this.max > 0 && this.checkedArr.length >= this.max) {
+        this.$message.warning(`至多选择 ${this.max} 项，请调整选项`)
+        return
+      }
+      this.canCheckArr = this.canCheckArr.filter(v => v.val !== item.val)
+      this.searchArr = this.searchArr.filter(v => v.val !== item.val)
       this.checkedArr.push(item)
     },
     // ON - 移除选择
     onCancelChecked(item) {
       this.checkedArr = this.checkedArr.filter(v => v.val !== item.val)
-      this.dataArr.push(item)
+      this.canCheckArr.push(item)
+      this.searchArr.push(item)
     },
-    // TODO: ON - 待选搜索
+    // ON - 待选搜索
     onSearch(label) {
-      console.log(label)
+      this.searchArr = this.canCheckArr.filter(
+        item => item.label.indexOf(label) !== -1
+      )
+    },
+    // ON - 清空搜索
+    onClear() {
+      this.searchArr = util.deepCopy(this.canCheckArr)
+    },
+    // ON - 确认
+    onSubmit() {
+      const len = this.checkedArr.length
+      // 数量限制判定 - 最小值
+      if (this.min > 0 && len < this.min) {
+        this.$message.warning(`请至少选择 ${this.min} 项`)
+        return
+      }
+      // 数量限制判定 - 最大值 --> [保险校验 - 一般用不着]
+      if (this.max > 0 && len >= this.max) {
+        this.$message.warning(`至多选择 ${this.max} 项，请调整选项`)
+        return
+      }
+      // 通过则返回
+      this.$emit('on-submit', this.checkedArr)
     }
   },
   created() {
-    const checkedValsArr = this.checkedArr.map(item => item.val)
-    // 前端过滤已选项
-    this.dataArr = this.data.filter(
-      item => checkedValsArr.indexOf(item.val) === -1
-    )
-    // - - - - - 传入项覆盖默认设置
-    this.canCheckConfig &&
-      (this.canCheckConf = Object.assign(
-        this.canCheckConf,
-        this.canCheckConfig
-      ))
-    this.checkedConfig &&
-      (this.checkedConf = Object.assign(this.checkedConf, this.checkedConfig))
+    this.initData()
   }
 }
 </script>
@@ -318,13 +424,6 @@ export default {
     }
   }
 }
-// .option {
-//   display: inline-block;
-//   width: 110px;
-//   height: 400px;
-//   line-height: 400px;
-//   margin: 0 15px;
-// }
 .option {
   font-size: 30px;
   color: #409eff;
